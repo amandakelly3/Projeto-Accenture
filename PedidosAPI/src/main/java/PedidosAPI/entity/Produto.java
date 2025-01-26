@@ -24,4 +24,6 @@ public class Produto {
 	private String descricao;
 
 	private Double valor;
+	
+	private Integer quantidade;
 }
