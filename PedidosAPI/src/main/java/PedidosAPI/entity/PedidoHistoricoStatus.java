@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,24 +17,23 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "pedidoHistoricoStatus")
 public class PedidoHistoricoStatus {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "pedido_id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+	
+	@ManyToOne
+    @JoinColumn(name = "idPedido", nullable = false)
     private Pedido pedido;
-
-    @ManyToOne
-    @JoinColumn(name = "status_pedido_id", nullable = false)
+    
+	@ManyToOne
+	@Column(name = "pedidoDataHora",nullable = false)
     private StatusPedido statusPedido;
-
+    
+	@Column(name = "pedidoDataHora")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
     private LocalDateTime dataHoraStatus;
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column
     private LocalDateTime dataHoraPagamento;
 }

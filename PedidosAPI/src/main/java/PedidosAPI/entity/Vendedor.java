@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,15 +12,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Table(name = "vendedor")
 public class Vendedor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    private Integer id;
 	
-	@Column(nullable = false, length = 45)
+	@Column(name = "vendedorNome")
     private String nome;
-
-    @Column(nullable = false, length = 45)
+	
+	@Column(name = "vendedorSetor")
     private String setor;
 
 }
