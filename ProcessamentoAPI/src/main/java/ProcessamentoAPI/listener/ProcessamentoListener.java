@@ -20,9 +20,8 @@ public class ProcessamentoListener {
     public void pedido(ProcessamentoPedidoDTO pedido) {
         try {
         	
-            log.info("pedido recebido: {}", pedido);
+            log.info("pedido recebido: {}", pedido.toString());
             processamentoService.processaPagamento(pedido);
-            log.info("Pagamento Processado: {}", pedido);
 
         } catch (Exception e) {
             log.error("Erro ao processar pagamento: {}", e.getMessage(), e);

@@ -17,7 +17,7 @@ public class PedidoDTO {
     private String descricao;
     private BigDecimal valor;
     private Status status;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dataHora = LocalDateTime.now();
     private Integer quantidadePedido;
 }

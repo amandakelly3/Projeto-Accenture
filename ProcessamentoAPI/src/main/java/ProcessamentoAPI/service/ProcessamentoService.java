@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import ProcessamentoAPI.dtos.PedidoDTO;
 import ProcessamentoAPI.dtos.ProcessamentoPedidoDTO;
 import ProcessamentoAPI.entity.Pedido;
-
 import ProcessamentoAPI.entity.StatusPedido;
 import ProcessamentoAPI.entity.enums.Status;
 import ProcessamentoAPI.repository.PedidoRepository;
@@ -46,10 +45,10 @@ public class ProcessamentoService {
             
         } else {
             pagamento.setStatus(Status.PROCESSADO);
-   
             statusPedido.setStatus(Status.PROCESSADO);
             pedidoRepository.save(pagamento);
             statusPedidoRepository.save(statusPedido);
+            logger.info("Pagamento Aprovado: {}", pagamento.toString());
             rabbitTemplate.convertAndSend("E5.pagamento.exchange", "pagamento.RoutingKey", pagamento);
         }
     }
