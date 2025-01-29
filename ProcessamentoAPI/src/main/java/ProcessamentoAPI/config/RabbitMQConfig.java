@@ -12,22 +12,22 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-	
+
 	@Value("${rabbitmq.exchange.name}")
 	private String exchangeName;
 
 	@Value("${rabbitmq.queue.name}")
 	private String queueName;
-	
+
 	@Value("${rabbitmq.routing.key.name}")
 	private String routingkey;
-	
+
 	@Value("${rabbitmq.pagamento.queue.name}")
 	private String pagamentoQueue;
 
 	@Value("${rabbitmq.pagamento.exchange.name}")
 	private String pagamentoExchange;
-	
+
 	@Value("${rabbitmq.pag.routing.key.name}")
 	private String pagroutingkey;
 
@@ -46,7 +46,7 @@ public class RabbitMQConfig {
     public Binding binding() {
         return BindingBuilder.bind(notificacaoQueue()).to(pedidosExchange()).with(routingkey);
     }
-    
+
     @Bean
     public DirectExchange pagamentoExchange() {
         return new DirectExchange(pagamentoExchange);
@@ -61,10 +61,10 @@ public class RabbitMQConfig {
     public Binding pagbinding() {
         return BindingBuilder.bind(pagamentoQueue()).to(pagamentoExchange()).with(pagroutingkey);
     }
-    
+
     @Bean
     public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }
-    
+
 }

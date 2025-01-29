@@ -35,9 +35,11 @@ public class PedidoService {
         pedido.setDescricao(criarPedidoDTO.getDescricao());
         pedido.setValor(criarPedidoDTO.getValor());
         pedido.setStatus(Status.EM_PROCESSAMENTO);
+        pedido.setQuantidadePedido(criarPedidoDTO.getQuantidadePedido());
+        pedidoRepository.save(pedido);
         rabbitTemplate.convertAndSend(exchangeName, routingKey, pedido);
         logger.info("Pedido enfileirado: {}", pedido.toString());
-        return pedidoRepository.save(pedido);
+        return pedido;
     }
     
     public void excluirPedido(Long id) {
@@ -53,8 +55,10 @@ public class PedidoService {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
         pedido.setDescricao(atualizarPedidoDTO.getDescricao());
         pedido.setValor(atualizarPedidoDTO.getValor());
+        pedido.setQuantidadePedido(atualizarPedidoDTO.getQuantidadePedido());
+        pedidoRepository.save(pedido);
         rabbitTemplate.convertAndSend(exchangeName, routingKey, atualizarPedidoDTO);
-        return pedidoRepository.save(pedido);
+        return pedido;
 
     }
     

@@ -1,10 +1,8 @@
 package ProcessamentoAPI.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import ProcessamentoAPI.entity.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,29 +21,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "pedido")
-public class Pedido {
-	
+@Table(name = "status_pedido")
+public class StatusPedido implements Serializable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idPedido")
     private Integer id;
-
-	@Column(name = "pedidoDescricao")
-    private String descricao;
-
-	@Column(name = "pedidoValor")
-    private BigDecimal valor;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "produtoStatus")
-    private Status status;
-
-	@Column(name = "pedidoDataHora")
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dataHora = LocalDateTime.now();
+	@JoinColumn(name = "pedidoDescricao")
+    private LocalDateTime descricao;
 	
-	@Column(name = "quantidadePedido")
-	private Integer quantidadePedido;
-
+	 @Enumerated(EnumType.STRING) 
+	 @JoinColumn(name = "produtoStatus")
+	 private Status status;
 }
