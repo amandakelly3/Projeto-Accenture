@@ -28,8 +28,11 @@ public class StatusPedido implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 	
-	@JoinColumn(name = "pedidoDescricao")
-    private LocalDateTime descricao;
+	@JoinColumn(name = "idPedido")
+	private Integer idpedidohistorico;
+	
+	@JoinColumn(name = "pedidoHistorico")
+    private LocalDateTime pedidoHistorico = LocalDateTime.now();
 	
 	 @Enumerated(EnumType.STRING) 
 	 @JoinColumn(name = "produtoStatus")

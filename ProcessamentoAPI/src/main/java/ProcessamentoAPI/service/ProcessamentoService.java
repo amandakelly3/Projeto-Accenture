@@ -35,7 +35,11 @@ public class ProcessamentoService {
         pagamento.setDataHora(LocalDateTime.now());
 
         StatusPedido statusPedido = new StatusPedido();
-
+        statusPedido.setPedidoHistorico(pedido.getDataHora());
+        statusPedido.setIdpedidohistorico(pedido.getId());
+        statusPedido.setStatus(pedido.getStatus());
+        statusPedidoRepository.save(statusPedido);
+        
         if (pedido.getValor().compareTo(BigDecimal.ZERO) <= 0) {
             statusPedido.setStatus(Status.NEGADO);
             pagamento.setStatus(Status.NEGADO);
@@ -52,5 +56,4 @@ public class ProcessamentoService {
             rabbitTemplate.convertAndSend("E5.pagamento.exchange", "pagamento.RoutingKey", pagamento);
         }
     }
-
 }
