@@ -9,8 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PedidoTemProdutos {
 
-	    private Pedido pedido;
+    private Long id;
 
-	    private Produto produto;
-	
+    private Pedido pedido;
+
+    private Produto produto;
+
+    private Integer valor;
 }

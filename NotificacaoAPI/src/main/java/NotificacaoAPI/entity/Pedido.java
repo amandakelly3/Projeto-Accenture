@@ -1,30 +1,18 @@
 package NotificacaoAPI.entity;
-
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import NotificacaoAPI.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pedido {
-
-
-	private Integer id;
-	
-	private String descricao;
-	
-	private Double valor;
-	
-	private String emailNotificacao;
-	
-	private Status status;
-	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime dataHora = LocalDateTime.now();
-	
-	private Vendedor vendedor;
+    private Integer id;
+    private String descricao;
+    private BigDecimal valor;
+    private List<PedidoTemProdutos> produtos = new ArrayList<>();
 }

@@ -1,6 +1,10 @@
 package NotificacaoAPI.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,12 +15,10 @@ import lombok.NoArgsConstructor;
 @Data
 public class Produto {
 
-	private Integer id;
-
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime dataHoraSaida;
-
+    private Integer id;
 	private String descricao;
-
-	private Double valor;
+	
+	private BigDecimal valor;
+	
+	private List<PedidoTemProdutos> pedidos = new ArrayList<>();
 }

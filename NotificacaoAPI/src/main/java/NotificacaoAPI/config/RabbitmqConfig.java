@@ -16,6 +16,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 @Configuration
 public class RabbitmqConfig {
 
@@ -70,7 +74,10 @@ public class RabbitmqConfig {
 
     @Bean
     public MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // Ignora campos desconhecidos
+        mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true); // Serializa enums como strings
+        return new Jackson2JsonMessageConverter(mapper);
     }
 
 }
