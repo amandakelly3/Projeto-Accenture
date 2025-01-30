@@ -2,6 +2,7 @@ package PedidosAPI.dtos;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -22,5 +23,6 @@ public class PedidoDTO {
     private Status status;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataHora = LocalDateTime.now();
+    private List<ItemProdutoDTO> produtos;
     
 }

@@ -1,5 +1,6 @@
 package PedidosAPI.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,21 +9,25 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import PedidosAPI.dtos.AtualizarPedidoDTO;
 import PedidosAPI.dtos.CriarPedidoDTO;
-import PedidosAPI.entity.Pedido;
+import PedidosAPI.dtos.ItemProdutoDTO;
+import PedidosAPI.entity.Pedido; 
+import PedidosAPI.entity.PedidoTemProdutos;
+import PedidosAPI.entity.Produto;
 import PedidosAPI.entity.enums.Status;
 import PedidosAPI.repository.PedidoRepository;
+import PedidosAPI.repository.PedidoTemProdutosRepository;
+import PedidosAPI.repository.ProdutoRepository;
+import lombok.Data;
 
+@Data
 @Service
 public class PedidoService {
 
 	private final Logger logger = LoggerFactory.getLogger(PedidoService.class);
     private final PedidoRepository pedidoRepository;
     private final RabbitTemplate rabbitTemplate;
-
-    public PedidoService(PedidoRepository pedidoRepository, RabbitTemplate rabbitTemplate) {
-        this.pedidoRepository = pedidoRepository;
-        this.rabbitTemplate = rabbitTemplate;
-    }
+    private final PedidoTemProdutosRepository pedidoTemProdutosRepository;
+    private final ProdutoRepository produtoRepository;
     
     @Value("${rabbitmq.exchange.name}")
     private String exchangeName;
@@ -31,11 +36,22 @@ public class PedidoService {
     private String routingKey;
 	
     public Pedido enfileirarPedido(CriarPedidoDTO criarPedidoDTO) {
-        Pedido pedido = new Pedido();
+    	Pedido pedido = new Pedido();
         pedido.setDescricao(criarPedidoDTO.getDescricao());
         pedido.setValor(criarPedidoDTO.getValor());
         pedido.setStatus(Status.EM_PROCESSAMENTO);
-        pedido.setQuantidadePedido(criarPedidoDTO.getQuantidadePedido());
+        pedidoRepository.save(pedido);
+        
+        for (ItemProdutoDTO item : criarPedidoDTO.getProdutos()) {
+            Produto produto = produtoRepository.findById(item.getIdProduto())
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+            PedidoTemProdutos ptp = new PedidoTemProdutos();
+            ptp.setPedido(pedido);
+            ptp.setProduto(produto);
+            pedidoTemProdutosRepository.save(ptp);
+
+        }
+    
         pedidoRepository.save(pedido);
         rabbitTemplate.convertAndSend(exchangeName, routingKey, pedido);
         logger.info("Pedido enfileirado: {}", pedido.toString());
@@ -55,7 +71,6 @@ public class PedidoService {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
         pedido.setDescricao(atualizarPedidoDTO.getDescricao());
         pedido.setValor(atualizarPedidoDTO.getValor());
-        pedido.setQuantidadePedido(atualizarPedidoDTO.getQuantidadePedido());
         pedidoRepository.save(pedido);
         rabbitTemplate.convertAndSend(exchangeName, routingKey, atualizarPedidoDTO);
         return pedido;

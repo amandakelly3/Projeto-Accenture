@@ -1,6 +1,7 @@
 package PedidosAPI.dtos;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class AtualizarPedidoDTO {
     private String descricao;
     private BigDecimal valor;
-	private Integer quantidadePedido;
-    
+	private List<ItemProdutoDTO> produtos;   
     
 }
