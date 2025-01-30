@@ -44,9 +44,6 @@ public class Pedido {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "produtoStatus")
     private Status status;
-	
-	@Column(name = "pedidoQuantidade")
-	private Integer quantidadePedido;
 
 	@Column(name = "pedidoDataHora")
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
