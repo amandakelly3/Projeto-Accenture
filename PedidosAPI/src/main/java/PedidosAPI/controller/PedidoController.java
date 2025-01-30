@@ -59,7 +59,7 @@ public class PedidoController {
         logger.info("Criando novo pedido: {}", criarPedidoDTO.toString());
         Pedido pedido = new Pedido();
         pedido.setDescricao(criarPedidoDTO.getDescricao());
-        pedido.setValor(criarPedidoDTO.getValor());
+        
         Pedido pedidoCriado = service.enfileirarPedido(criarPedidoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(pedidoCriado);
     }

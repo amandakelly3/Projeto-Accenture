@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class CriarProdutoDTO {
 	private String descricao;
 	private BigDecimal valor;
+	private Integer quantidadeEstoque;
 }

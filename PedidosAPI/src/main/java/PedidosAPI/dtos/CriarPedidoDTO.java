@@ -11,6 +11,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class CriarPedidoDTO {
     private String descricao;
-    private BigDecimal valor;
 	private List<ItemProdutoDTO> produtos;
 }

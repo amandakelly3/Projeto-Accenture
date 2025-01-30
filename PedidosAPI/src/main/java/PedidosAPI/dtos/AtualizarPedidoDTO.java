@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 public class AtualizarPedidoDTO {
     private String descricao;
     private BigDecimal valor;
-	private List<ItemProdutoDTO> produtos;   
+	private List<ItemProdutoDTO> produtos;
     
 }

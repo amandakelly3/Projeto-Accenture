@@ -1,5 +1,6 @@
 package PedidosAPI.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -13,10 +14,12 @@ import PedidosAPI.dtos.ItemProdutoDTO;
 import PedidosAPI.entity.Pedido; 
 import PedidosAPI.entity.PedidoTemProdutos;
 import PedidosAPI.entity.Produto;
+import PedidosAPI.entity.Vendedor;
 import PedidosAPI.entity.enums.Status;
 import PedidosAPI.repository.PedidoRepository;
 import PedidosAPI.repository.PedidoTemProdutosRepository;
 import PedidosAPI.repository.ProdutoRepository;
+import jakarta.transaction.Transactional;
 import lombok.Data;
 
 @Data
@@ -35,26 +38,42 @@ public class PedidoService {
     @Value("${rabbitmq.routing.key.name}")
     private String routingKey;
 	
+    @Transactional
     public Pedido enfileirarPedido(CriarPedidoDTO criarPedidoDTO) {
-    	Pedido pedido = new Pedido();
+    	Vendedor vendedor = new Vendedor();
+        Pedido pedido = new Pedido();
         pedido.setDescricao(criarPedidoDTO.getDescricao());
-        pedido.setValor(criarPedidoDTO.getValor());
         pedido.setStatus(Status.EM_PROCESSAMENTO);
-        pedidoRepository.save(pedido);
-        
+        BigDecimal valorTotal = BigDecimal.ZERO;
+
+        List<PedidoTemProdutos> itensPedido = new ArrayList<>();
+
         for (ItemProdutoDTO item : criarPedidoDTO.getProdutos()) {
             Produto produto = produtoRepository.findById(item.getIdProduto())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-            PedidoTemProdutos ptp = new PedidoTemProdutos();
-            ptp.setPedido(pedido);
-            ptp.setProduto(produto);
-            pedidoTemProdutosRepository.save(ptp);
+                    .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
+            BigDecimal subtotal = produto.getValor().multiply(BigDecimal.valueOf(item.getQuantidade()));
+            valorTotal = valorTotal.add(subtotal);
+
+            PedidoTemProdutos ptp = new PedidoTemProdutos();
+            ptp.setPedido(pedido); 
+            ptp.setProduto(produto);
+            ptp.setQuantidade(item.getQuantidade());
+            ptp.setValor(valorTotal);
+
+            itensPedido.add(ptp);
         }
-    
-        pedidoRepository.save(pedido);
+
+        pedido.setValor(valorTotal);
+        pedido = pedidoRepository.save(pedido);
+
+        for (PedidoTemProdutos ptp : itensPedido) {
+            pedidoTemProdutosRepository.save(ptp);
+        }
+
         rabbitTemplate.convertAndSend(exchangeName, routingKey, pedido);
-        logger.info("Pedido enfileirado: {}", pedido.toString());
+        logger.info("Pedido enfileirado: {}", pedido);
+
         return pedido;
     }
     

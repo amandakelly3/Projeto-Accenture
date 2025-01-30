@@ -1,5 +1,7 @@
 package PedidosAPI.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +32,10 @@ public class PedidoTemProdutos {
     @ManyToOne
     @JoinColumn(name = "idProduto", nullable = false)
     private Produto produto;
+    
+    @Column(name = "quantidade") // Novo campo para quantidade
+    private Integer quantidade;
 
     @Column(name = "valorProduto")
-    private Integer valor;
+    private BigDecimal valor;
 }

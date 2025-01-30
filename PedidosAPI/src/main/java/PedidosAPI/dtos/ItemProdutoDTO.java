@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemProdutoDTO {
-    private Long idProduto; // ID do produto
-    private Integer valor; // Quantidade solicitada
+    private Long idProduto;
+    private Integer quantidade;
 }

@@ -29,6 +29,7 @@ public class ProdutoService {
         Produto produto = new Produto();
         produto.setDescricao(criarProdutoDTO.getDescricao());
         produto.setValor(criarProdutoDTO.getValor());
+        produto.setQuantidadeEstoque(criarProdutoDTO.getQuantidadeEstoque());
         repository.save(produto);
         logger.info("Produto criado: {}", produto.toString());
         return produto;
@@ -39,6 +40,7 @@ public class ProdutoService {
         Produto produto = repository.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
         produto.setDescricao(atualizarProdutoDTO.getDescricao());
         produto.setValor(atualizarProdutoDTO.getValor());
+        produto.setQuantidadeEstoque(atualizarProdutoDTO.getQuantidadeEstoque());
         repository.save(produto);
         logger.info("Produto atualizado: {}", produto.toString());
         return produto;
