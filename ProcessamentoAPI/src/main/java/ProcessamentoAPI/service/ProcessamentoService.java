@@ -37,40 +37,33 @@ public class ProcessamentoService {
 
         Pedido pagamento = new Pedido();
         pagamento.setId(pedido.getId());
-        pagamento.setValor(pedido.getValor());  // Agora sempre terá um valor válido
+        pagamento.setValor(pedido.getValor()); 
         pagamento.setDescricao(pedido.getDescricao());
         pagamento.setDataHora(LocalDateTime.now());
-
-        StatusPedido statusPedido = new StatusPedido();
-        statusPedido.setPedidoHistorico(pedido.getDataHora());
-        statusPedido.setIdpedidohistorico(pedido.getId());
-
+        
+        StatusPedido novoStatus = new StatusPedido();
+        novoStatus.setPedido(pedido);
+        novoStatus.setDescricao(LocalDateTime.now());
+        
         if (pedido.getValor().compareTo(BigDecimal.ZERO) <= 0) {
-            statusPedido.setStatus(Status.NEGADO);
             pagamento.setStatus(Status.NEGADO);
+            novoStatus.setStatus(Status.NEGADO);
             logger.info("Pagamento negado: {}", pagamento.toString());
         } else {
-            statusPedido.setStatus(Status.PROCESSADO);
+            novoStatus.setStatus(Status.PROCESSADO);
             pagamento.setStatus(Status.PROCESSADO);
             rabbitTemplate.convertAndSend("E5.pagamento.exchange", "pagamento.RoutingKey", pagamento);
             logger.info("Pagamento aprovado: {}", pagamento.toString());
         }
 
         pedidoRepository.save(pagamento);
-        statusPedidoRepository.save(statusPedido);
+        statusPedidoRepository.save(novoStatus);
+
     }
     public Pedido reverterProcessamento(Integer id) {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
         
-        StatusPedido novoStatus = new StatusPedido();
-        novoStatus.setIdpedidohistorico(id);
-        novoStatus.setStatus(Status.EM_PROCESSAMENTO);
-        novoStatus.setPedidoHistorico(LocalDateTime.now());
-        
-        pedido.setStatus(Status.EM_PROCESSAMENTO);
-        
-        statusPedidoRepository.save(novoStatus);
         return pedidoRepository.save(pedido);
     }
 }
