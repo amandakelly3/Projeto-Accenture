@@ -3,15 +3,15 @@
 #### /produtos:
 
 ##### GET por id:
-![FOTO](imagens\getProdutoporID.png)
+![getprodutos](imagens\getProdutoporID.png)
 ##### GET todos:
-![FOTO](imagens\getTodosProdutos.png)
+![gettodoos](imagens\getTodosProdutos.png)
 ##### POST:
-![FOTO](imagens\postProdutos.png)
+![postprod](imagens\postProdutos.png)
 ##### PUT:
-![FOTO](imagens\PUTPRODUTO.png)
+![putprod](imagens\PUTPRODUTO.png)
 ##### DELETE por id:
-![FOTO](imagens\DELETEPRODUTOPORID.png)
+![deleteprod](imagens\DELETEPRODUTOPORID.png)
 
 
 #### /pedidos:
@@ -23,4 +23,6 @@
 ##### POST:
 ![pedidos](imagens\POSTPEDIDOS.jpg)
 ##### DELETE:
-![pedidos](imagens\deletePedido.png)
+![delete](imagens\deletePedido.png) 
+
+---------
