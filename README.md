@@ -46,8 +46,8 @@ NotificacaoAPI é uma aplicação *Spring Boot* que gerencia a notificação de 
 
 
 
-### Modelo Logico:
-![ModeloLogico](docs/Diagrama banco de dados - loja.jpeg)
+### Modelo Lógico:
+![ModeloLogico](docs/diagramaloja.jpeg)
 
 ## Como Executar:
 
