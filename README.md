@@ -44,11 +44,16 @@ NotificacaoAPI é uma aplicação *Spring Boot* que gerencia a notificação de 
 
 - **Enviar Notificação**: Envia notificações quando um pedido é processado.
 
+
+
+### Modelo Logico:
+![ModeloLogico](docs/Diagrama banco de dados - loja.jpeg)
+
 ## Como Executar:
 
 1. Clone o repositório:
    ```sh
-   git clone https://github.com/seu-usuario/projeto-ecommerce.git
+   git clone https://github.com/amandakelly3/Projeto-Accenture.git
    ```
 
 2. Navegue até o diretório de cada microsserviço e execute o comando Maven para iniciar a aplicação:
