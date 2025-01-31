@@ -1,4 +1,4 @@
-### Aqui está as evidências dos testes realizados no postman:
+### Aqui está as evidências dos testes realizados no Postman:
 
 #### /produtos:
 
@@ -13,7 +13,6 @@
 ##### DELETE por id:
 ![deleteprod](imagens\DELETEPRODUTOPORID.png)
 
-
 #### /pedidos:
 
 ##### GET:
@@ -25,4 +24,5 @@
 ##### DELETE:
 ![delete](imagens\deletePedido.png) 
 
----------
+---------------
+##### Testes também podem ser realizados no Swagger
