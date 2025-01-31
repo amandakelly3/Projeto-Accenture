@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+import PedidosAPI.dtos.ItemProdutoResponseDTO;
+import PedidosAPI.dtos.PedidoResponseDTO;
+import PedidosAPI.mapper.PedidoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -55,15 +59,17 @@ public class PedidoController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Pedido.class)))
     })
     @PostMapping
-    public ResponseEntity<Pedido> criarPedido(@RequestBody CriarPedidoDTO criarPedidoDTO) {
+    public ResponseEntity<PedidoResponseDTO> criarPedido(@RequestBody CriarPedidoDTO criarPedidoDTO) {
         logger.info("Criando novo pedido: {}", criarPedidoDTO.toString());
-        Pedido pedido = new Pedido();
-        pedido.setDescricao(criarPedidoDTO.getDescricao());
-        
         Pedido pedidoCriado = service.enfileirarPedido(criarPedidoDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pedidoCriado);
+
+        // Mapeia o Pedido para PedidoResponseDTO
+        PedidoResponseDTO responseDTO = PedidoMapper.toPedidoResponseDTO(pedidoCriado);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
-  
+
+
     @Operation(summary = "Atualiza um pedido", description = "Recurso para atualizar um pedido existente",
             responses = {@ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Pedido.class)))}

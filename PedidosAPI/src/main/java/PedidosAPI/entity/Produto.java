@@ -43,7 +43,4 @@ public class Produto {
 	
 	@Column(name = "quantidadeEstoque")
 	private Integer quantidadeEstoque;
-	
-	@OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
-	private List<PedidoTemProdutos> pedidos = new ArrayList<>();
 }

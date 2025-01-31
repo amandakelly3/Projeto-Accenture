@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import PedidosAPI.entity.Pedido;
+import PedidosAPI.entity.Vendedor;
 import PedidosAPI.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +25,6 @@ public class PedidoDTO {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataHora = LocalDateTime.now();
     private List<ItemProdutoDTO> produtos;
+
     
 }

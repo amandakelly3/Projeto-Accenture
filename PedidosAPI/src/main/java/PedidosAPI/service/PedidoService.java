@@ -37,40 +37,34 @@ public class PedidoService {
     
     @Value("${rabbitmq.routing.key.name}")
     private String routingKey;
-	
+
     @Transactional
     public Pedido enfileirarPedido(CriarPedidoDTO criarPedidoDTO) {
-    	Vendedor vendedor = new Vendedor();
         Pedido pedido = new Pedido();
         pedido.setDescricao(criarPedidoDTO.getDescricao());
         pedido.setStatus(Status.EM_PROCESSAMENTO);
+        pedido.setProdutos(new ArrayList<>());
         BigDecimal valorTotal = BigDecimal.ZERO;
 
-        List<PedidoTemProdutos> itensPedido = new ArrayList<>();
 
         for (ItemProdutoDTO item : criarPedidoDTO.getProdutos()) {
             Produto produto = produtoRepository.findById(item.getIdProduto())
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-            BigDecimal subtotal = produto.getValor().multiply(BigDecimal.valueOf(item.getQuantidade()));
-            valorTotal = valorTotal.add(subtotal);
+            // O método addProduto agora retorna o item para ser adicionado à lista de produtos
+            PedidoTemProdutos pedidoTemProduto = pedido.addProduto(produto, item.getQuantidade());
+            
+            // Adicionando o item criado à lista de produtos
+            pedido.getProdutos().add(pedidoTemProduto);
 
-            PedidoTemProdutos ptp = new PedidoTemProdutos();
-            ptp.setPedido(pedido); 
-            ptp.setProduto(produto);
-            ptp.setQuantidade(item.getQuantidade());
-            ptp.setValor(valorTotal);
-
-            itensPedido.add(ptp);
+            valorTotal = valorTotal.add(produto.getValor().multiply(BigDecimal.valueOf(item.getQuantidade())));
         }
 
         pedido.setValor(valorTotal);
+        // Salva o pedido e os produtos associados
         pedido = pedidoRepository.save(pedido);
 
-        for (PedidoTemProdutos ptp : itensPedido) {
-            pedidoTemProdutosRepository.save(ptp);
-        }
-
+        // Envia o pedido para a fila do RabbitMQ
         rabbitTemplate.convertAndSend(exchangeName, routingKey, pedido);
         logger.info("Pedido enfileirado: {}", pedido);
 

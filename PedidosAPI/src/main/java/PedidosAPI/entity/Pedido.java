@@ -5,36 +5,30 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import PedidosAPI.repository.PedidoTemProdutosRepository;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import PedidosAPI.dtos.ItemProdutoDTO;
 import PedidosAPI.dtos.ProdutoDTO;
 import PedidosAPI.entity.enums.Status;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString(exclude = "produtos")
 @Table(name = "pedido")
 public class Pedido {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idPedido")
+	@Column(name = "idPedido",nullable = false)
     private Integer id;
 
 	@Column(name = "pedidoDescricao")
@@ -51,7 +45,20 @@ public class Pedido {
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataHora = LocalDateTime.now();
 	
-	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-	private List<PedidoTemProdutos> produtos = new ArrayList<>();
-	
-}
+	@OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER,
+    cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Anotação para configurar a serialização da lista
+    private List<PedidoTemProdutos> produtos = new ArrayList<>();
+
+    // Modificado para retornar o PedidoTemProdutos
+    public PedidoTemProdutos addProduto(Produto produto, int quantidade) {
+        PedidoTemProdutos pedidoTemProduto = new PedidoTemProdutos();
+        pedidoTemProduto.setPedido(this); // Define o pedido atual
+        pedidoTemProduto.setProduto(produto); // Define o produto
+        pedidoTemProduto.setQuantidade(quantidade); // Define a quantidade
+        pedidoTemProduto.setValor(produto.getValor());
+
+        return pedidoTemProduto;
+        
+        
+}}

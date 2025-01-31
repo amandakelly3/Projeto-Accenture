@@ -2,6 +2,9 @@ package PedidosAPI.entity;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,11 +16,13 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity // Adicione esta anotação
+@ToString(exclude = "pedido")
 @Table(name = "pedidoTemProdutos")
 public class PedidoTemProdutos {
 
@@ -26,13 +31,14 @@ public class PedidoTemProdutos {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "idPedido", nullable = false)
+    @JoinColumn(name = "pedido_id")
+    @JsonIgnore
     private Pedido pedido;
 
     @ManyToOne
-    @JoinColumn(name = "idProduto", nullable = false)
+    @JoinColumn(name = "produto_id")
     private Produto produto;
-    
+
     @Column(name = "quantidade") // Novo campo para quantidade
     private Integer quantidade;
 
