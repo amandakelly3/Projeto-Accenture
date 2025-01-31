@@ -20,5 +20,4 @@ public class Produto {
 	
 	private BigDecimal valor;
 	
-	private List<PedidoTemProdutos> pedidos = new ArrayList<>();
 }
