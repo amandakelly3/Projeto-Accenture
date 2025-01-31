@@ -3,7 +3,7 @@
 #### /produtos:
 
 ##### GET por id:
-![getprodutos](imagens/getProdutoporID.png)
+![getprodutos](imagens/getProdutoPorID.png)
 ##### GET todos:
 ![gettodoos](imagens/getTodosProdutos.png)
 ##### POST:
