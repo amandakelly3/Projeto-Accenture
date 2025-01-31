@@ -1,4 +1,4 @@
-# Projeto E-commerce
+# Projeto E-commerce 
 
 #### Tecnologias e conexões utilizadas:
 - **Java - Spring Boot**
@@ -8,7 +8,7 @@
 ## Funcionamento dos Modulos:
 
 ### PedidosAPI 
-PedidosAPI é uma aplicação Spring Boot que gerencia pedidos, utilizando MySQL para persistência e RabbitMQ para comunicação assíncrona.
+PedidosAPI é uma aplicação Microsserviços Spring Boot que gerencia pedidos, utilizando MySQL para persistência e RabbitMQ para comunicação assíncrona.
 
 #### Packages e Funções
 

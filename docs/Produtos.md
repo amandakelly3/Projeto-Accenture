@@ -61,9 +61,9 @@ Como atendente, preciso de uma API que me permita criar, visualizar, atualizar e
 
 #### 5. Listar Todos os Produtos (GET /api/produtos)
 - **Cenário 1:** Listar todos os produtos quando existem produtos cadastrados.
-  - **Dados de Entrada:** Nenhum.
+  - **Dados de Entrada:** Nenhum
   - **Resultado Esperado:** A API retorna o status HTTP `200 (OK)` com uma lista de todos os produtos.
 
 - **Cenário 2:** Listar todos os produtos quando não há produtos cadastrados.
-  - **Dados de Entrada:** Nenhum.
+  - **Dados de Entrada:** Nenhum
   - **Resultado Esperado:** A API retorna o status HTTP `200 (OK)` com uma lista vazia.
