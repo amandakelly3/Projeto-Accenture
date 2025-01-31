@@ -47,10 +47,9 @@ public class Pedido {
 	
 	@OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER,
     cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Anotação para configurar a serialização da lista
+    @JsonManagedReference 
     private List<PedidoTemProdutos> produtos = new ArrayList<>();
 
-    // Modificado para retornar o PedidoTemProdutos
     public PedidoTemProdutos addProduto(Produto produto, int quantidade) {
         PedidoTemProdutos pedidoTemProduto = new PedidoTemProdutos();
         pedidoTemProduto.setPedido(this); // Define o pedido atual

@@ -1,6 +1,7 @@
 package PedidosAPI.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -14,11 +15,13 @@ import PedidosAPI.dtos.ItemProdutoDTO;
 import PedidosAPI.entity.Pedido; 
 import PedidosAPI.entity.PedidoTemProdutos;
 import PedidosAPI.entity.Produto;
+import PedidosAPI.entity.StatusPedido;
 import PedidosAPI.entity.Vendedor;
 import PedidosAPI.entity.enums.Status;
 import PedidosAPI.repository.PedidoRepository;
 import PedidosAPI.repository.PedidoTemProdutosRepository;
 import PedidosAPI.repository.ProdutoRepository;
+import PedidosAPI.repository.StatusPedidoRepository;
 import jakarta.transaction.Transactional;
 import lombok.Data;
 
@@ -29,6 +32,7 @@ public class PedidoService {
 	private final Logger logger = LoggerFactory.getLogger(PedidoService.class);
     private final PedidoRepository pedidoRepository;
     private final RabbitTemplate rabbitTemplate;
+    private final StatusPedidoRepository statusPedidoRepository; 
     private final PedidoTemProdutosRepository pedidoTemProdutosRepository;
     private final ProdutoRepository produtoRepository;
     
@@ -51,20 +55,22 @@ public class PedidoService {
             Produto produto = produtoRepository.findById(item.getIdProduto())
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-            // O método addProduto agora retorna o item para ser adicionado à lista de produtos
             PedidoTemProdutos pedidoTemProduto = pedido.addProduto(produto, item.getQuantidade());
             
-            // Adicionando o item criado à lista de produtos
             pedido.getProdutos().add(pedidoTemProduto);
 
             valorTotal = valorTotal.add(produto.getValor().multiply(BigDecimal.valueOf(item.getQuantidade())));
         }
 
         pedido.setValor(valorTotal);
-        // Salva o pedido e os produtos associados
         pedido = pedidoRepository.save(pedido);
+        
+        StatusPedido statusPedido = new StatusPedido();
+        statusPedido.setDescricao(LocalDateTime.now());
+        statusPedido.setStatus(pedido.getStatus());
+        statusPedido.setPedido(pedido);
+        statusPedidoRepository.save(statusPedido); 
 
-        // Envia o pedido para a fila do RabbitMQ
         rabbitTemplate.convertAndSend(exchangeName, routingKey, pedido);
         logger.info("Pedido enfileirado: {}", pedido);
 

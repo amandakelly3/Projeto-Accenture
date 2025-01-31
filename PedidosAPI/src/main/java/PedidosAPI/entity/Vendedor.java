@@ -21,10 +21,10 @@ public class Vendedor {
 	@Column(name = "idVendedor")
     private Integer id;
 	
-	@Column(name = "vendedorNome")
+	@Column(name = "nome")
     private String nome;
 	
-	@Column(name = "vendedorSetor")
+	@Column(name = "setor")
     private String setor;
 
 }

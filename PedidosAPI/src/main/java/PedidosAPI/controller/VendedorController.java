@@ -34,7 +34,7 @@ public class VendedorController {
     }
     @Operation(summary = "Busca todos os Vendedores", description = "Recurso para buscar vendedores",
             responses = {@ApiResponse(responseCode = "200", description = "Busca feita com sucesso",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produto.class)))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Vendedor.class)))
     })
     @GetMapping
     public List<Vendedor> listarVendedores() {
@@ -42,7 +42,7 @@ public class VendedorController {
     }
     @Operation(summary = "Busca vendedores por ID", description = "Recurso para buscar vendedores por ID",
             responses = {@ApiResponse(responseCode = "200", description = "Busca feita com sucesso",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produto.class)))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Vendedor.class)))
     })
     @GetMapping("/{id}")
     public Vendedor buscarPorId(@PathVariable Integer id) {
@@ -50,7 +50,7 @@ public class VendedorController {
     }
     @Operation(summary = "Cria um novo vendedor", description = "Recurso para criar um novo vendedor",
             responses = {@ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produto.class)))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Vendedor.class)))
     })
     @PostMapping
     public Vendedor criarVendedor(@RequestBody CriarVendedorDTO criarVendedorDTO) {
@@ -59,7 +59,7 @@ public class VendedorController {
     
     @Operation(summary = "Atualiza um vendedor", description = "Recurso para atualizar um vendedor existente",
             responses = {@ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produto.class)))}
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Vendedor.class)))}
     )
     @PutMapping("/{id}")
     public Vendedor atualizarVendedor(
